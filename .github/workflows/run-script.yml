@@ -42,3 +42,9 @@ jobs:
           chmod +x ./build-from-source.sh
           ./build-from-source.sh
           ls
+  
+      - uses: actions/upload-artifact@v2
+        name: Push apk to artifact
+        with:
+          name: revanced.apk
+          path: './revanced.apk'
