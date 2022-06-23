@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir "build"
           cd "build"
-          wget -q "https://github.com/CnC-Robert/revanced-cli-script/releases/download/stock-yt-17.19.36/youtube.apk"
+          wget -q "https://bafybeielag3wfmnmm3h66ipwsottds4iiuh3iw4vrsm53fgimqdqi57lxi.ipfs.dweb.link/YouTube_v17.24.34_apkpure.com.apk"
           cd ..
       
       - name: Execute script
@@ -55,7 +55,11 @@ jobs:
         run: |
           mkdir "build"
           cd "build"
-          wget -q "https://github.com/CnC-Robert/revanced-cli-script/releases/download/stock-yt-17.19.36/youtube.apk"
+          curl -s https://api.github.com/repos/nalimhahs/revanced-cli-script/releases/latest \
+          | grep "youtube.apk" \
+          | cut -d : -f 2,3 \
+          | tr -d \" \
+          | wget -qi -
           cd ..
       
       - name: Execute script
@@ -71,3 +75,12 @@ jobs:
         with:
           name: revanced.apk
           path: './revanced.apk'
+      
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: './revanced.apk'
+          asset_name: revanced.apk
+          tag: ${{ github.ref }}
+          overwrite: true
