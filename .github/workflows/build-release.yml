@@ -64,7 +64,7 @@ jobs:
           tag: ${{ steps.release-tag.outputs.release }}
           overwrite: true
 
-  build-default:
+  build-custom:
     runs-on: ubuntu-latest
 
     steps:
