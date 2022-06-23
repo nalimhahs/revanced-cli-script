@@ -26,20 +26,11 @@ jobs:
           java-version: '17'
  
       - name: Download YouTube apk
-        shell: python
         run: |
-          import os
-          import json
-          import urllib.request
-
-          request = urllib.request.urlopen("https://api.github.com/repos/${{ github.repository }}/releases/latest").read()
-          data = json.loads(request)
-          for asset in data['assets']:
-            if asset['name'] == 'youtube.apk':
-              url = asset['browser_download_url']
-
-          os.mkdir('build')
-          urllib.request.urlretrieve(url, "./build/youtube.apk")
+          mkdir "build"
+          cd "build"
+          wget -q "https://github.com/CnC-Robert/revanced-cli-script/releases/download/stock-yt-17.19.36/youtube.apk"
+          cd ..
       
       - name: Execute script
         env:
@@ -48,7 +39,6 @@ jobs:
           chmod +x ./build-from-source.sh
           ./build-from-source.sh
           ls
-
   build-from-prebuilt:
     runs-on: ubuntu-latest
 
@@ -61,41 +51,16 @@ jobs:
           java-version: '17'
  
       - name: Download YouTube apk
-        shell: python
         run: |
-          import os
-          import json
-          import urllib.request
-
-          request = urllib.request.urlopen("https://api.github.com/repos/${{ github.repository }}/releases/latest").read()
-          data = json.loads(request)
-          for asset in data['assets']:
-            if asset['name'] == 'youtube.apk':
-              url = asset['browser_download_url']
-
-          os.mkdir('build')
-          urllib.request.urlretrieve(url, "./build/youtube.apk")
-
-      - name: Execute build script
+          mkdir "build"
+          cd "build"
+          wget -q "https://github.com/CnC-Robert/revanced-cli-script/releases/download/stock-yt-17.19.36/youtube.apk"
+          cd ..
+      
+      - name: Execute script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           chmod +x ./build-from-prebuilt.sh
           ./build-from-prebuilt.sh
           ls
-      
-      - id: release-tag
-        name: Fetch latest release tag
-        uses: pozetroninc/github-action-get-latest-release@master
-        with:
-          repository: ${{ github.repository }}
-          excludes: prerelease, draft
-      
-      - name: Upload apk to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: './revanced.apk'
-          asset_name: revanced.apk
-          tag: ${{ steps.release-tag.outputs.release }}
-          overwrite: true
