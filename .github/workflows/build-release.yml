@@ -14,11 +14,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-from-prebuilt:
+  build-default:
     runs-on: ubuntu-latest
 
     steps:
-    
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
@@ -61,6 +60,57 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: './revanced.apk'
+          asset_name: revanced-default.apk
+          tag: ${{ steps.release-tag.outputs.release }}
+          overwrite: true
+
+  build-default:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download YouTube apk
+        shell: python
+        run: |
+          import os
+          import json
+          import urllib.request
+
+          request = urllib.request.urlopen("https://api.github.com/repos/${{ github.repository }}/releases/latest").read()
+          data = json.loads(request)
+          for asset in data['assets']:
+            if asset['name'] == 'youtube.apk':
+              url = asset['browser_download_url']
+
+          os.mkdir('build')
+          urllib.request.urlretrieve(url, "./build/youtube.apk")
+
+      - name: Execute build script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EXCLUDED_PATCHES: disable-create-button old-quality-layout disable-shorts-button custom-branding disable-fullscreen-panels
+        run: |
+          chmod +x ./build-from-prebuilt.sh
+          ./build-from-prebuilt.sh
+          ls
+      
+      - id: release-tag
+        name: Fetch latest release tag
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: ${{ github.repository }}
+          excludes: prerelease, draft
+      
+      - name: Upload apk to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: './revanced-custom.apk'
           asset_name: revanced.apk
           tag: ${{ steps.release-tag.outputs.release }}
           overwrite: true
