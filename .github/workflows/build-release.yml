@@ -93,7 +93,7 @@ jobs:
       - name: Execute build script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          EXCLUDED_PATCHES: disable-create-button old-quality-layout disable-shorts-button custom-branding disable-fullscreen-panels
+          EXCLUDED_PATCHES: "disable-create-button disable-shorts-button custom-branding hide-cast-button disable-fullscreen-panels"
         run: |
           chmod +x ./build-from-prebuilt.sh
           ./build-from-prebuilt.sh
