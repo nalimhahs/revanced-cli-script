@@ -55,13 +55,9 @@ jobs:
         run: |
           mkdir "build"
           cd "build"
-          curl -s https://api.github.com/repos/nalimhahs/revanced-cli-script/releases/latest \
-          | grep "youtube.apk" \
-          | cut -d : -f 2,3 \
-          | tr -d \" \
-          | wget -qi -
+          curl -s https://api.github.com/repos/nalimhahs/revanced-cli-script/releases/latest | grep "youtube.apk" | cut -d : -f 2,3 | tr -d \" | wget -qi -
           cd ..
-      
+
       - name: Execute script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
