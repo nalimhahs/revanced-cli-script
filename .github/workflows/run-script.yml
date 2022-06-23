@@ -26,11 +26,20 @@ jobs:
           java-version: '17'
  
       - name: Download YouTube apk
+        shell: python
         run: |
-          mkdir "build"
-          cd "build"
-          wget -q "https://bafybeielag3wfmnmm3h66ipwsottds4iiuh3iw4vrsm53fgimqdqi57lxi.ipfs.dweb.link/YouTube_v17.24.34_apkpure.com.apk"
-          cd ..
+          import os
+          import json
+          import urllib.request
+
+          request = urllib.request.urlopen("https://api.github.com/repos/${{ github.repository }}/releases/latest").read()
+          data = json.loads(request)
+          for asset in data['assets']:
+            if asset['name'] == 'youtube.apk':
+              url = asset['browser_download_url']
+
+          os.mkdir('build')
+          urllib.request.urlretrieve(url, "./build/youtube.apk")
       
       - name: Execute script
         env:
@@ -52,11 +61,20 @@ jobs:
           java-version: '17'
  
       - name: Download YouTube apk
+        shell: python
         run: |
-          mkdir "build"
-          cd "build"
-          curl https://api.github.com/repos/nalimhahs/revanced-cli-script/releases/latest | grep "youtube.apk" | cut -d : -f 2,3 | tr -d \" | wget -qi -
-          cd ..
+          import os
+          import json
+          import urllib.request
+
+          request = urllib.request.urlopen("https://api.github.com/repos/${{ github.repository }}/releases/latest").read()
+          data = json.loads(request)
+          for asset in data['assets']:
+            if asset['name'] == 'youtube.apk':
+              url = asset['browser_download_url']
+
+          os.mkdir('build')
+          urllib.request.urlretrieve(url, "./build/youtube.apk")
 
       - name: Execute script
         env:
