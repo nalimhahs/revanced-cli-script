@@ -110,7 +110,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: './revanced-custom.apk'
-          asset_name: revanced.apk
+          file: './revanced.apk'
+          asset_name: revanced-custom.apk
           tag: ${{ steps.release-tag.outputs.release }}
           overwrite: true
