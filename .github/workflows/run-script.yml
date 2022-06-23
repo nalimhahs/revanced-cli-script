@@ -76,7 +76,7 @@ jobs:
           os.mkdir('build')
           urllib.request.urlretrieve(url, "./build/youtube.apk")
 
-      - name: Execute script
+      - name: Execute build script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -84,13 +84,8 @@ jobs:
           ./build-from-prebuilt.sh
           ls
       
-      - uses: actions/upload-artifact@v2
-        name: Push apk to artifact
-        with:
-          name: revanced.apk
-          path: './revanced.apk'
-      
       - id: release-tag
+        name: Fetch latest release tag
         uses: pozetroninc/github-action-get-latest-release@master
         with:
           repository: ${{ github.repository }}
