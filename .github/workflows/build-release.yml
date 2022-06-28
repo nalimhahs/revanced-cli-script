@@ -95,6 +95,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EXCLUDED_PATCHES: "disable-create-button disable-shorts-button custom-branding hide-cast-button disable-fullscreen-panels"
         run: |
+          echo "$EXCLUDED_PATCHES"
           chmod +x ./build-from-prebuilt.sh
           ./build-from-prebuilt.sh
           ls

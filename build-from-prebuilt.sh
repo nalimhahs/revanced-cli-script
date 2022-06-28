@@ -153,6 +153,8 @@ if [ -n "$EXCLUDED_PATCHES" ]; then
 	
 fi
 
+echo "$EXCLUDE"
+
 # Execute the cli and if an adb device name is given deploy on device
 "$JAVA" -jar "revanced-cli.jar" -a "youtube.apk" -o "revanced.apk" -b "revanced-patches.jar" -m "integrations.apk" $(if [ -n "$1" ]; then echo "-d $1"; fi) -t "temp" $(if [ "$ROOT" = "1" ]; then echo "--mount"; fi) $(if [ "$ROOT" = "1" ]; then echo "-e microg-support"; fi) $(echo "$EXCLUDE")
 
