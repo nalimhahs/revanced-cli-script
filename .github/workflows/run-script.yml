@@ -35,6 +35,7 @@ jobs:
       - name: Execute script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EXCLUDED_PATCHES: "disable-create-button disable-shorts-button custom-branding hide-cast-button disable-fullscreen-panels"
         run: |
           chmod +x ./build-from-source.sh
           ./build-from-source.sh
