@@ -144,9 +144,7 @@ if [ -n "$EXCLUDED_PATCHES" ]; then
 
 	# Check if every patch in $EXCLUDED_PATCHES is a valid patch and add it to patches to exclude
 	for PATCH in $EXCLUDED_PATCHES; do
-		if echo "$PATCHES" | grep "$PATCH" &> "/dev/null"; then
-			EXCLUDE="$EXCLUDE -e $PATCH"
-		fi
+		EXCLUDE="$EXCLUDE -e $PATCH"
 	done
 	
 	EXCLUDE="${EXCLUDE:1}"
