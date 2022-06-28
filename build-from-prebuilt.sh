@@ -137,11 +137,13 @@ if [ "$LIST" = "1" ]; then
 	exit 0
 fi
 
+echo "Exclude Patches: $EXCLUDED_PATCHES"
 if [ -n "$EXCLUDED_PATCHES" ]; then
 	
 	# Get a list of all available patches
 	PATCHES="$("$JAVA" -jar "revanced-cli.jar" -b "revanced-patches.jar" -l)"
-	
+	echo "patches: $PATCHES"
+
 	# Check if every patch in $EXCLUDED_PATCHES is a valid patch and add it to patches to exclude
 	for PATCH in $EXCLUDED_PATCHES; do
 		if echo "$PATCHES" | grep "$PATCH" &> "/dev/null"; then
@@ -153,7 +155,7 @@ if [ -n "$EXCLUDED_PATCHES" ]; then
 	
 fi
 
-echo "$EXCLUDE"
+echo "Exclude: $EXCLUDE"
 
 # Execute the cli and if an adb device name is given deploy on device
 "$JAVA" -jar "revanced-cli.jar" -a "youtube.apk" -o "revanced.apk" -b "revanced-patches.jar" -m "integrations.apk" $(if [ -n "$1" ]; then echo "-d $1"; fi) -t "temp" $(if [ "$ROOT" = "1" ]; then echo "--mount"; fi) $(if [ "$ROOT" = "1" ]; then echo "-e microg-support"; fi) $(echo "$EXCLUDE")
