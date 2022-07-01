@@ -162,6 +162,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: './revanced.apk'
-          asset_name: revanced-custom.apk
+          asset_name: revanced-root-custom.apk
           tag: ${{ steps.release-tag.outputs.release }}
           overwrite: true
